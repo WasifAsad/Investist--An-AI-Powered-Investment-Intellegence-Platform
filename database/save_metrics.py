@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 def save_metrics(
     company: str,
     year: Optional[int],
-    metrics: Dict[str, Any],
+    metrics: Any,
 ) -> None:
     """
     Persist extracted financial metrics to database.
@@ -16,11 +16,12 @@ def save_metrics(
     Args:
         company: Company name.
         year: Year of report.
-        metrics: Dictionary of extracted metrics.
+        metrics: FinancialMetrics object or dictionary of extracted metrics.
     """
+    metrics_data = metrics.to_dict() if hasattr(metrics, "to_dict") else metrics
     database_url = os.getenv("DATABASE_URL")
     if not database_url:
-        print(f"Metrics recorded for {company} ({year}): {metrics}")
+        print(f"Metrics recorded for {company} ({year}): {metrics_data}")
         print("Note: DATABASE_URL not set. Skipping database persistence.")
         return
 

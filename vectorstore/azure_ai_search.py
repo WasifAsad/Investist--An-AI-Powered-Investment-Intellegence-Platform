@@ -1,6 +1,6 @@
 import hashlib
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
@@ -269,6 +269,33 @@ class Retriever:
                 metadata={k: v for k, v in doc.items() if k != "content"},
             )
             for doc in raw_docs
+        ]
+
+    def invoke(
+        self,
+        query: str,
+        company: Optional[str] = None,
+        year: Optional[Union[str, int]] = None,
+        top_k: int = 20,
+    ) -> List[Any]:
+        """
+        Retrieve relevant chunks matching the signature expected by RAG extractors.
+        """
+        filters = []
+        if company:
+            filters.append(f"company eq '{company}'")
+        if year is not None:
+            filters.append(f"year eq '{year}'")
+
+        filter_expr = " and ".join(filters) if filters else None
+        results = self.search(query=query, top=top_k, filter=filter_expr)
+
+        return [
+            Document(
+                page_content=doc.get("content", ""),
+                metadata={k: v for k, v in doc.items() if k != "content"},
+            )
+            for doc in results
         ]
 
     def __call__(self, query: str, **kwargs: Any) -> List[Dict[str, Any]]:
