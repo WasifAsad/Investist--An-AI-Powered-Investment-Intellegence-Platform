@@ -14,8 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 class FinancialMetrics(BaseModel):
-    model_config = {"populate_by_name": True}
-
     revenue: str | int | None = Field(None, alias="Revenue")
     net_income: str | int | None = Field(None, alias="Net Income")
     operating_income: str | int | None = Field(None, alias="Operating Income")
@@ -123,26 +121,26 @@ Year: {year}
 Context:
 {context}
 
-Extract ONLY the fiscal year {year} values. Return a single value per field, not multi-year breakdowns.
+Extract the following information:
 
-Return a JSON object with exactly these keys and types:
-- "company": string (the company name)
-- "year": integer (the fiscal year)
-- "revenue": integer (total revenue / net sales for {year} only, as a single number)
-- "net_income": integer (net income / net profit for {year} only, as a single number)
-- "operating_income": integer (operating income for {year} only, as a single number)
-- "cash_flow": integer (operating cash flow for {year} only, as a single number)
-- "total_assets": integer (total assets for {year} only, as a single number)
-- "total_liabilities": integer (total liabilities for {year} only, as a single number)
-- "risk_factors": string (brief comma-separated summary of key risk factors, include percentages where available)
-- "growth_drivers": string (brief comma-separated summary of core growth drivers, include percentages where available)
+1. Revenue
+2. Net Income
+3. Operating Income
+4. Cash Flow from Operating Activities
+5. Total Assets
+6. Total Liabilities
+7. Top Risk Factors
+8. Top Growth Drivers
 
 Instructions:
+
 - Use only the provided context.
-- Return null for any field if the value is unavailable.
+- Return null if unavailable.
 - Financial values must match the report exactly.
-- Do NOT return nested objects or arrays. Every value must be a single string, integer, or null.
-- Return valid JSON only, with no markdown formatting or code fences.
+- Risk factors should be concise.
+- Growth drivers should be concise.
+- Include numbers in Risk factors and Growth Drivers (what % of growth or risk does an entity brings)
+- Return valid JSON only.
 """
 
 
