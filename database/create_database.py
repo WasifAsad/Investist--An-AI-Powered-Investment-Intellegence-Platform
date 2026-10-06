@@ -9,7 +9,6 @@ from sqlalchemy import (
     String,
     Text,
     DateTime,
-    UniqueConstraint,
     text,
 )
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -26,7 +25,7 @@ DB_USER = os.getenv("MYSQL_USER", "root")
 DB_PASSWORD = os.getenv("MYSQL_PASSWORD", "")
 DB_HOST = os.getenv("MYSQL_HOST", "localhost")
 DB_PORT = os.getenv("MYSQL_PORT", "3306")
-DB_NAME = os.getenv("MYSQL_DATABASE", "investist")
+DB_NAME = os.getenv("MYSQL_DATABASE", "apia")
 
 DATABASE_URL = (
     f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
@@ -63,9 +62,6 @@ class FinancialMetric(Base):
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
     )
 
-    __table_args__ = (
-        UniqueConstraint("company", "year", name="uq_company_year"),
-    )
 
     def __repr__(self):
         return f"<FinancialMetric(company='{self.company}', year={self.year})>"
