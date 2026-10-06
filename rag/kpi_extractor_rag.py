@@ -8,6 +8,7 @@ from azure.search.documents import SearchClient
 from vectorstore.azure_ai_search import AzureAISearchVectorStore
 from llm.azure_openai import get_structured_completion
 from pydantic import BaseModel, Field
+from database.save_metrics import save_metrics
 load_dotenv()
 
 logger = logging.getLogger(__name__)
@@ -123,12 +124,12 @@ Context:
 
 Extract the following information:
 
-1. Revenue
-2. Net Income
-3. Operating Income
-4. Cash Flow from Operating Activities
-5. Total Assets
-6. Total Liabilities
+1. Revenue (Format the value in $ B with 3 decimal points)
+2. Net Income (Format the value in $ B with 3 decimal points)
+3. Operating Income (Format the value in $ B with 3 decimal points)
+4. Cash Flow from Operating Activities (Format the value in $ B with 3 decimal points)
+5. Total Assets (Format the value in $ B with 3 decimal points)
+6. Total Liabilities (Format the value in $ B with 3 decimal points)
 7. Top Risk Factors
 8. Top Growth Drivers
 
@@ -199,8 +200,6 @@ def main() -> None:
         print(value)
         print("-" * 80)
 
-
-    from database.save_metrics import save_metrics
 
     save_metrics(
         company=company,
