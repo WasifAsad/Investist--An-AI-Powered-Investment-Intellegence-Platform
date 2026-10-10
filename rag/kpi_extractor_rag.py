@@ -130,7 +130,7 @@ Extract the following information:
 4. Cash Flow from Operating Activities (Format the value in $ B with 3 decimal points)
 5. Total Assets (Format the value in $ B with 3 decimal points)
 6. Total Liabilities (Format the value in $ B with 3 decimal points)
-7. Top Risk Factors
+7. Top Risk Factors 
 8. Top Growth Drivers
 
 Instructions:
@@ -174,7 +174,7 @@ def extract_financial_metrics(
 
 
 def main() -> None:
-    company = "Apple"
+    company = "Tesla"
     year = 2024
 
     vector_store = AzureAISearchVectorStore(
